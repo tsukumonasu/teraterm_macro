@@ -1,0 +1,30 @@
+; EC2 AmazonLinux Login Macro
+;
+; Author: CLP Tatsuya Naiki
+
+; ユーザ名
+username = 'ec2-user'
+; pemファイルの配置
+keyfile = 'C:\Users\naiki\.ssh\tnaiki.pem'
+ ログファイル置き場
+curdir = 'C:\Users\naiki\Desktop\teraterm\log\'
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+gettime timestr "%Y%m%d-%H%M%S"
+inputbox  'HOST:' 'hostname or IP'
+
+sprintf2 filename 'console_%s_%s_%s.log' inputstr username timestr
+msg = inputstr
+
+strconcat msg ':22 /ssh /auth=publickey /user='
+strconcat msg username
+strconcat msg ' /keyfile='
+strconcat msg keyfile
+
+
+connect msg
+changedir curdir
+logopen filename 0 0
+
+wait username
